@@ -38,20 +38,18 @@ class Iteration:
 
 	def __str__(self):
 		s = f'{self.N}\t'
+
 		if len(self.bs) > 0:
 			s += f'\t\t{self.bs[0].x}'
 			s += f'\t\t\t{self.bs[0].y}'
-			# s += f'\t\t\t{Being.fit(self.bs[0], self.f)}'
 			s += f'\t\t\t{self.bs[0].fit(self.f)}'
-
 			val = max_avg_fit(self.bs, self.f)
 			s += f'\t\t\t{val[0]}\t\t\t{val[1]}\n'
+
 			for it in range(1, len(self.bs)):
 				s += f'\t\t\t{self.bs[it].x}'
 				s += f'\t\t\t{self.bs[it].y}'
-				# s += f'\t\t\t{Being.fit(self.bs[it], self.f)}\n'
 				s += f'\t\t\t{self.bs[it].fit(self.f)}\n'
-
 		return s
 
 	def get_best_xyz_list(self):
