@@ -60,6 +60,7 @@ class Iteration:
 
 def fun(xs, ys):
 	return np.exp(-np.power(xs, 2) - np.power(ys, 2))
+# return np.cos(xs) * np.cos(ys)
 
 
 def custom_sort_key(being):
@@ -134,26 +135,8 @@ def genetic(f, xl, xr, yl, yr, num, gens):
 
 		probability = 0.25
 		for b in beings:
-			# this seems to be better due to the tests conducted
-			# if random.random() < probability:
-			# 	mutated_x = True
-			# 	if random.random() < 0.5:
-			# 		b.rand_x(xl, xr)
-			# 	else:
-			# 		b.rand_y(yl, yr)
-			# 		mutated_x = False
-			# 	if random.random() < probability:
-			# 		if mutated_x:
-			# 			b.rand_y(yl, yr)
-			# 		else:
-			# 			b.rand_x(xl, xr)
-
-			# if random.random() < probability:
-			# 	b.rand_x(xl, xr)
-			# if random.random() < probability:
-			# 	b.rand_y(yl, yr)
-
 			if random.random() < probability:
+
 				if random.random() < 0.5:
 					val = random.uniform(0, 1) * xdel5per
 				else:
