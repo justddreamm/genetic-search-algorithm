@@ -129,6 +129,9 @@ def genetic(f, xl, xr, yl, yr, num, gens):
 		# should be mutated as well. if one is mutated already, then the second
 		# one has its chance for this reduced
 
+		xdel5per = 0.05 * (xr - xl)
+		ydel5per = 0.05 * (yr - yl)
+
 		probability = 0.25
 		for b in beings:
 			# this seems to be better due to the tests conducted
@@ -145,10 +148,37 @@ def genetic(f, xl, xr, yl, yr, num, gens):
 			# 		else:
 			# 			b.rand_x(xl, xr)
 
+			# if random.random() < probability:
+			# 	b.rand_x(xl, xr)
+			# if random.random() < probability:
+			# 	b.rand_y(yl, yr)
+
 			if random.random() < probability:
-				b.rand_x(xl, xr)
+				if random.random() < 0.5:
+					val = random.uniform(0, 1) * xdel5per
+				else:
+					val = - random.uniform(0, 1) * xdel5per
+
+				if val < xl:
+					val = xl
+				if val > xr:
+					val = xr
+
+				b.set(b.x + val, b.y)
+
 			if random.random() < probability:
-				b.rand_y(yl, yr)
+
+				if random.random() < 0.5:
+					val = random.uniform(0, 1) * ydel5per
+				else:
+					val = - random.uniform(0, 1) * ydel5per
+
+				if val < yl:
+					val = yl
+				if val > yr:
+					val = yr
+
+				b.set(b.x, b.y + val)
 
 		beings.sort(key = custom_sort_key, reverse = True)
 		iterations.append(Iteration(N, beings, f))
