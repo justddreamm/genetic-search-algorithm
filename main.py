@@ -130,38 +130,33 @@ def genetic(f, xl, xr, yl, yr, num, gens):
 		# should be mutated as well. if one is mutated already, then the second
 		# one has its chance for this reduced
 
-		xdel5per = 0.05 * (xr - xl)
-		ydel5per = 0.05 * (yr - yl)
-
 		probability = 0.25
+		del_per = 5
+		x_delta = del_per / 100 * (xr - xl)
+		y_delta = del_per / 100 * (yr - yl)
+
 		for b in beings:
 			if random.random() < probability:
-
+				val = random.uniform(0, 1) * x_delta
 				if random.random() < 0.5:
-					val = random.uniform(0, 1) * xdel5per
-				else:
-					val = - random.uniform(0, 1) * xdel5per
-
-				if val < xl:
-					val = xl
-				if val > xr:
-					val = xr
-
+					val *= -1
 				b.set(b.x + val, b.y)
 
+				if b.x < xl:
+					b.x = xl
+				if b.x > xr:
+					b.x = xr
+
 			if random.random() < probability:
-
+				val = random.uniform(0, 1) * y_delta
 				if random.random() < 0.5:
-					val = random.uniform(0, 1) * ydel5per
-				else:
-					val = - random.uniform(0, 1) * ydel5per
-
-				if val < yl:
-					val = yl
-				if val > yr:
-					val = yr
-
+					val *= -1
 				b.set(b.x, b.y + val)
+
+				if b.y < yl:
+					b.y = yl
+				if b.y > yr:
+					b.y = yr
 
 		beings.sort(key = custom_sort_key, reverse = True)
 		iterations.append(Iteration(N, beings, f))
@@ -191,7 +186,7 @@ if __name__ == '__main__':
 	y1 = -2
 	y2 = 2
 	n = 4
-	gen_m = 100
+	gen_m = 10
 
 	# the very function
 	result = genetic(fun, x1, x2, y1, y2, n, gen_m)
