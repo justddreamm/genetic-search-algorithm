@@ -86,10 +86,10 @@ def main():
 	Being.set_dev_amp(percentage)
 	Being.set_mut_prob(mut_prob)
 	Being.set_borders(borders)
-	Being.set_fun(fun)
+	Being.set_f(fun)
 
 	# genetic algorithm
-	result = genetic(beings_num, gens_max, mut_prob, maximum = aim_max)
+	result = genetic(beings_num, gens_max, maximum = aim_max)
 
 	# printing the data
 	Being.show_meta()
