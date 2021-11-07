@@ -44,12 +44,11 @@ def show_result(g0, gens):
 	}
 
 	for gen in gens:
-		maf = gen.max_avg_fit()
 		values['n'].append(gen.n())
 		values['n'].extend(skip)
-		values['max_fits'].append(maf[0])
+		values['max_fits'].append(gen.best_fit())
 		values['max_fits'].extend(skip)
-		values['avg_fits'].append(maf[1])
+		values['avg_fits'].append(gen.avg_fit())
 		values['avg_fits'].extend(skip)
 
 		for b in gen.beings():
@@ -67,7 +66,7 @@ def show_result(g0, gens):
 		table.add_column(titles[i], values[key])
 
 	b0 = g0.best_values()
-	with open('results.txt', 'a') as file:
+	with open('results.txt', 'w') as file:
 		file.write(table.get_string())
 		file.write(f'\nThe best option so far is: x = {b0[0]} y = {b0[1]}, fit = {b0[2]}\n')
 
@@ -79,8 +78,9 @@ def main():
 	percentage = 5 / 100
 	borders = [[x1, x2], [y1, y2]]
 	beings_num = 4
-	gens_max = 60
+	gens_max = 10
 	mut_prob = 0.25
+	aim_max = False
 
 	# applying the values
 	Being.set_dev_amp(percentage)
@@ -89,7 +89,7 @@ def main():
 	Being.set_fun(fun)
 
 	# genetic algorithm
-	result = genetic(beings_num, gens_max, mut_prob)
+	result = genetic(beings_num, gens_max, mut_prob, maximum = aim_max)
 
 	# printing the data
 	Being.show_meta()

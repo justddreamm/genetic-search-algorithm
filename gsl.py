@@ -32,13 +32,12 @@ class Being:
 
 	@classmethod
 	def show_meta(cls):
-		with open('results.txt', 'w') as file:
-			file.write('Settings so far\n')
-			file.write(f'Deviation share amplitude: {cls.__dev_amp}\n')
-			file.write(f'Mutation probability: {cls.__mut_prob}\n')
-			file.write(f'Borders:\n'
-			           f'x [ {cls.__borders[0][0]} ; {cls.__borders[0][1]} ]\n'
-			           f'y [ {cls.__borders[1][0]} ; {cls.__borders[1][1]} ]\n')
+		print('Settings')
+		print(f'Deviation share amplitude: {cls.__dev_amp}')
+		print(f'Mutation probability: {cls.__mut_prob}')
+		print(f'Borders:')
+		print(f'x [ {cls.__borders[0][0]} ; {cls.__borders[0][1]} ]')
+		print(f'y [ {cls.__borders[1][0]} ; {cls.__borders[1][1]} ]')
 
 	@staticmethod
 	def generate(n):
@@ -87,8 +86,14 @@ class Being:
 
 
 class Generation:
+	__maximum: None
+
+	@classmethod
+	def set_aim_max(cls, flag):
+		cls.__maximum = flag
+
 	def __init__(self, n, bs):
-		bs.sort(key = Being.custom_sort_key, reverse = True)
+		bs.sort(key = Being.custom_sort_key, reverse = Generation.__maximum)
 		self.__bs = bs
 		self.__n = n
 
@@ -102,8 +107,8 @@ class Generation:
 	def best_fit(self):
 		return self.best_being().fit()
 
-	def max_avg_fit(self):
-		return [self.best_being().fit(), sum(b.fit() for b in self.beings()) / len(self.beings())]
+	def avg_fit(self):
+		return sum(b.fit() for b in self.beings()) / len(self.beings())
 
 	def n(self):
 		return self.__n
@@ -115,14 +120,15 @@ class Generation:
 		return self.beings()[0]
 
 
-def genetic(n, g_lim, prob):
+def genetic(n, g_lim, prob, maximum = True):
+	Generation.set_aim_max(maximum)
 	bs = Being.generate(n)
 	gen = Generation(0, bs)
 	g0 = gen
 	gens = [gen]
 	nvs = [0]
-	y0vs = [gen.max_avg_fit()[0]]
-	yavs = [gen.max_avg_fit()[1]]
+	y0vs = [gen.best_fit()]
+	yavs = [gen.avg_fit()]
 
 	for N in range(1, g_lim + 1):
 		progeny = bs[0].crossing(bs[1])
@@ -136,11 +142,14 @@ def genetic(n, g_lim, prob):
 				b.mutate(1)
 
 		gen = Generation(N, bs)
-		g0 = max([gen, g0], key = Generation.custom_sort_key)
+		if maximum:
+			g0 = max([gen, g0], key = Generation.custom_sort_key)
+		else:
+			g0 = min([gen, g0], key = Generation.custom_sort_key)
 		if N < 10 or N % 10 == 0:
 			gens.append(gen)
 			nvs.append(N)
-			y0vs.append(gen.max_avg_fit()[0])
-			yavs.append(gen.max_avg_fit()[1])
+			y0vs.append(gen.best_fit())
+			yavs.append(gen.avg_fit())
 
 	return [g0, gens, [nvs, yavs, y0vs]]
