@@ -1,0 +1,12 @@
+data given:
+d = w0 = 0
+c = w1 = 8
+
+experiment w/ A = 10
+genetic coefficients: [0.04669317316069099, 8.171895800199376]
+lowest squares method coefficients: [-0.004166226135550251, 8.022774163534677]
+
+experiment w/ A = 0
+genetic coefficients: [-0.21743373258813664, 7.8491994038035475]
+lowest squares method coefficients: [0.0, 8.0]
+
